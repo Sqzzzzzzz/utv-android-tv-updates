@@ -53,8 +53,9 @@ def main():
             assert out.tell() <= 50 * 1024 * 1024
     assert digest(apk) == expected, 'APK checksum mismatch'
     sdk = Path(os.environ['ANDROID_HOME']) / 'build-tools'
-    tools = sorted((p for p in sdk.iterdir() if (p / 'apksigner').is_file()), key=lambda p:tuple(int(n) for n in re.findall(r'\d+',p.name)))[-1]
+    tools = sdk / '36.0.0'
     cert = subprocess.check_output([str(tools/'apksigner'),'verify','--print-certs',str(apk)],text=True)
+    print(cert, flush=True)
     matches = re.findall(r'Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]+)',cert)
     assert len(matches) == 1 and matches[0].lower() == config['certificateSha256'], 'Wrong signing certificate'
     badging = subprocess.check_output([str(tools/'aapt'),'dump','badging',str(apk)],text=True)
