@@ -1,0 +1,26 @@
+name: Publish verified signed APK
+on:
+  push:
+    branches: [main]
+    paths: [publication.json, .github/workflows/publish.yml, scripts/publish.py]
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: publish-update
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'Sqzzzzzzz/utv-android-tv-updates' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Verify APK, publish release and update discovery feed
+        run: python3 scripts/publish.py
