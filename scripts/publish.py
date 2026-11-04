@@ -25,7 +25,7 @@ def main():
     assert type(code) is int and code > 0
     assert re.fullmatch(r'[0-9a-f]{64}', expected)
     assert config['packageName'] == 'dev.mark.utvremote'
-    assert config['certificateSha256'] == 'b7b518662cb14be645c7c1f805d7a2c1e8b58dc4fa282912beaf7e97dcd74180'
+    assert config['certificateSha256'] == '284edfc67d53e5c3034d1a318ce8c85f5f6cf9c00398872915f1a4654f08b248'
     assert 0 < len(config['parts']) <= 20
     tag, filename = 'v' + version, 'utv-' + version + '.apk'
     manifest = {
